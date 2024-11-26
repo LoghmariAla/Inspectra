@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+  <title>Inspectra - Essaie</title>
+
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="../static/css/bootstrap.css" />
+
+  <!-- fonts style -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Poppins:400,700&display=swap" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link href="../static/css/style.css" rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="../static/css/responsive.css" rel="stylesheet" />
+  <style>
+    .alertes.bubble {
+    background-color: #fffdc2; /* Light red background for error messages */
+    color: #721c24; /* Dark red text */
+    border: 1px solid #f5c6cb; /* Red border */
+    border-radius: 15px; /* Rounded corners for bubble effect */
+    padding: 5px 20px; /* Padding inside the bubble */
+    max-width: 530px; /* Limit width to make it more compact */
+    margin: 10px auto; /* Center the bubble and add spacing */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    font-family: "Poppins", sans-serif; /* Match site font */
+    font-size: 14px; /* Text size */
+    text-align: center; /* Center align text */
+}
+  </style>
+</head>
+
+<body class="sub_page">
+  <div class="hero_area ">
+    <!-- header section strats -->
+    <header class="header_section">
+      <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg custom_nav-container">
+          <a class="navbar-brand" href="/">
+            <img src="../static/images/logo.png" alt="">
+          </a>
+          <div class="" id="">
+            <div class="User_option">
+              <form class="form-inline my-2  mb-3 mb-lg-0">
+                <input type="search" placeholder="Search">
+                <button class="btn   my-sm-0 nav_search-btn" type="submit"></button>
+              </form>
+            </div>
+
+            <div class="custom_menu-btn">
+              <button onclick="openNav()">
+                <span class="s-1">
+
+                </span>
+                <span class="s-2">
+
+                </span>
+                <span class="s-3">
+
+                </span>
+              </button>
+            </div>
+            <div id="myNav" class="overlay">
+              <div class="overlay-content">
+                <a href="/">Home</a>
+                <a href="/essaie">Essaie</a>
+                <a href="contact.html">Nous Contacter</a>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <!-- end header section -->
+  </div>
+
+  <!-- about section -->
+
+  <section class="about_section layout_padding">
+    <div class="container">
+      <div class="detail-box">
+        <div class="heading_container">
+          <img src="../static/images/uppload.png" alt="">
+          <h2>Upload Files</h2>
+        </div>
+        {% if message %}
+        <div class="alertes bubble">
+          <p>{{ message | safe }}</p>
+        </div>
+        {% endif %}
+        <div class="container2">
+          <div class="card2">
+            <div class="drop_box2">
+              <header>
+                <h4>Select File here</h4>
+              </header>
+              <p style="color: grey">Files Supported: PDF, TEXT, EXE , DOCX</p>
+              <form id="uploadForm" action="/essaie" method="POST" enctype="multipart/form-data">
+                <input type="file" name="file" id="fileID" accept=".exe,.docx,.pdf,.txt,.doc" hidden onchange="uploadFile()">
+                <button class="btn2" type="button" onclick="triggerFileInput()">Choose File</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <script>
+    function triggerFileInput() {
+      // Simulate a click on the hidden file input
+      document.getElementById("fileID").click();
+    }
+  
+    function uploadFile() {
+      // Automatically submit the form when a file is selected
+      const form = document.getElementById("uploadForm");
+      form.submit();
+    }
+  </script>
+  
+
+  <!-- end about section -->
+
+
+
+  <br><br><br><br><br><br>
+  <!-- footer section -->
+  <section class="container-fluid footer_section ">
+    <p>
+      © 2024 Inspectra. All Rights Reserved. Powered by Innovation.
+    </p>
+  </section>
+  <!-- end  footer section -->
+
+
+  <script type="text/javascript" src="../static/js/jquery-3.4.1.min.js"></script>
+  <script type="text/javascript" src="../static/js/bootstrap.js"></script>
+  <script>
+    function openNav() {
+      document.getElementById("myNav").classList.toggle("menu_width")
+      document.querySelector(".custom_menu-btn").classList.toggle("menu_btn-style")
+    }
+  </script>
+
+</body>
+
+</html>
