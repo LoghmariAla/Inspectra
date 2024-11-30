@@ -6,7 +6,6 @@ from werkzeug.utils import secure_filename
 import yara
 from app import app
 
-# Dynamically set the uploads folder relative to the project directory
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads')
 RESULTS_FOLDER = os.path.join(BASE_DIR, 'results')
@@ -27,14 +26,12 @@ def allowed_file(filename):
     """Check if the uploaded file has an allowed extension."""
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-# Function to generate a random ID
 def generate_random_id():
     return ''.join(random.choices(string.ascii_lowercase + string.digits, k=8))
 
 # Function to analyze the file using YARA
 def analyze_file_with_yara(file_path):
     try:
-        # Construct the absolute path to the YARA rules file
         rule_file_path = os.path.abspath(os.path.join(BASE_DIR, YARA_RULES, 'rules.yar'))
         
         # Load YARA rules
@@ -56,48 +53,40 @@ def index():
 
 @app.route('/essaie', methods=['GET', 'POST'])
 def essaie():
-    message = None  # Variable to store the message
-    analysis_results = None  # Variable to store YARA analysis results
-    result_id = None  # Variable to store the result ID
+    message = None  
+    analysis_results = None  
+    result_id = None 
     
     if request.method == 'POST':
-        # Check if the POST request has the file part
         if 'file' not in request.files:
             message = "No file part in the request"
             return render_template('essaie.html', message=message)
         
         file = request.files['file']
         
-        # If no file is selected, return an error
         if file.filename == '':
             message = "No file selected"
             return render_template('essaie.html', message=message)
         
-        # Validate the file type
         if not allowed_file(file.filename):
             message = "Invalid file type. Only PDF, TXT, EXE, and DOCX are allowed."
             return render_template('essaie.html', message=message)
         
-        # Use secure_filename to prevent directory traversal
+        # prevent directory traversal
         filename = secure_filename(file.filename)
         
         try:
-            # Save the file to the uploads folder
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(file_path)
             
-            # Perform YARA analysis
             analysis_results = analyze_file_with_yara(file_path)
 
-            # Generate a random ID for the results page
             result_id = generate_random_id()
             result_path = os.path.join(app.config['RESULTS_FOLDER'], f"{result_id}.txt")
 
-            # Save the analysis results in a file
             with open(result_path, 'w') as result_file:
                 result_file.write('\n'.join(analysis_results))
 
-            # Create the success message with a link to the results page
             message = f"File <b>{filename}</b> uploaded successfully! <a href='/results/{result_id}'>View results</a>"
 
         except Exception as e:
