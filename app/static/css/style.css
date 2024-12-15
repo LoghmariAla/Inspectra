@@ -21,13 +21,35 @@ body {
 .card2 {
   border-radius: 10px;
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.3);
-  width: 600px;
-  height: 260px;
+  width: 90%; /* Adjust width to be percentage-based */
+  max-width: 600px; /* Max-width to restrict the size */
+  height: auto; /* Let the height adjust based on content */
   background-color: #ffffff;
   padding: 25px 30px 40px;
-  overflow: auto; /* Adds scroll behavior if content exceeds the height */
-  word-wrap: break-word; /* Prevents long words or text from overflowing the card */
+  overflow: auto; /* Enables scrolling if content overflows */
+  word-wrap: break-word; /* Prevents long words from overflowing the card */
+  position: relative; /* Make sure we can position the <pre> inside the card */
 }
+
+.card2 pre {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 20px; /* Increase padding for better readability */
+  background-color: #f7f7f7; /* Soft light background for <pre> */
+  border-radius: 8px; /* Rounded corners for a more modern look */
+  font-family: 'Courier New', monospace; /* Clean font for code */
+  font-size: 14px;
+  line-height: 1.6; /* Increase line height for better readability */
+  color: #333333; /* Dark text color for better contrast */
+  white-space: pre-wrap; /* Ensure wrapping of long lines */
+  word-wrap: break-word; /* Prevent overflow of long words */
+  overflow: auto; /* Scrollable content if it overflows */
+  box-sizing: border-box; /* Ensure padding is included in the element's total size */
+  border: 1px solid #ddd; /* Light border for definition */
+}
+
+
 
 .card2 h3 {
   font-size: 22px;

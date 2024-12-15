@@ -9,7 +9,7 @@ rule RansomwareIndicators
         $encrypted_ext1 = ".locked" ascii
         $encrypted_ext2 = ".crypt" ascii
         $ransom_note = "Your files have been encrypted" ascii
-        $btc_wallet = "1" /[a-km-zA-HJ-NP-Z1-9]{25,34}/ // Bitcoin wallet regex
+        $btc_wallet = /[13][a-km-zA-HJ-NP-Z1-9]{25,34}/ // Bitcoin wallet regex
 
     condition:
         any of ($encrypted_ext*) or $ransom_note or $btc_wallet
