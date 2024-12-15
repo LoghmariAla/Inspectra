@@ -29,7 +29,6 @@ def allowed_file(filename):
 def generate_random_id():
     return ''.join(random.choices(string.ascii_lowercase + string.digits, k=8))
 
-# Function to analyze the file using YARA
 def analyze_file_with_yara(file_path):
     try:
         rule_file_path = os.path.abspath(os.path.join(BASE_DIR, YARA_RULES, 'rules.yar'))
@@ -37,7 +36,6 @@ def analyze_file_with_yara(file_path):
         # Load YARA rules
         rules = yara.compile(filepath=rule_file_path)
         
-        # Perform YARA analysis on the file
         matches = rules.match(file_path)
         if matches:
             return ['- Rule Matched: '+match.rule+'\n- Description: '+match.meta['description']+'\n' for match in matches]
@@ -112,7 +110,6 @@ def show_results(result_id):
     else:
         return "Result not found", 404
 
-# Error handler for files exceeding size limit
 @app.errorhandler(413)
 def request_entity_too_large(e):
     return render_template('essaie.html', message="File size exceeds the maximum allowed size of 5MB."), 413

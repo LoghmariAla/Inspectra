@@ -1,79 +1,100 @@
-rule detect_hello_world
+rule RansomwareIndicators
 {
     meta:
-        description = "Detects the word 'hello' in a file"
-        author = "Your Name"
-        date = "2024-11-19"
+        description = "Detect files related to ransomware activity"
+        author = "Loghmari Ala"
+        date = "2024-12-15"
 
     strings:
-        $hello = "hello"
+        $encrypted_ext1 = ".locked" ascii
+        $encrypted_ext2 = ".crypt" ascii
+        $ransom_note = "Your files have been encrypted" ascii
+        $btc_wallet = "1" /[a-km-zA-HJ-NP-Z1-9]{25,34}/ // Bitcoin wallet regex
 
     condition:
-        $hello
+        any of ($encrypted_ext*) or $ransom_note or $btc_wallet
 }
 
 
-rule MortisLocker
+rule MaliciousScript
 {
-	meta:
-		author = "ANY.RUN"
-		description = "Detects MortisLocker ransomware"
-		date = "2023-10-05"
-		reference = "https://twitter.com/MalGamy12/status/1709475837685256466"
-		hash1 = "a5012e20342f4751360fd0d15ab013385cecd2a5f3e7a3e8503b1852d8499819"
-		hash2 = "b6a4331334a16af65c5e4193f45b17c874e3eff8dd8667fd7cb8c7a570e2a8b9"
-		hash3 = "c6df9cb7c26e0199106bdcd765d5b93436f373900b26f23dfc03b8b645c6913f"
-		hash4 = "dac667cfc7824fd45f511bba83ffbdb28fa69cdeff0909979de84064ca2e0283"
-	strings:
-		$malname = "MortisLocker" fullword ascii
+    meta:
+        description = "Detects malicious patterns in script files"
+        author = "Loghmari Ala"
+        date = "2024-12-15"
 
-		$app_policy = "AppPolicyGetProcessTerminationMethod" fullword ascii
+    strings:
+        $powershell_obf = "Powershell -EncodedCommand" ascii
+        $eval = "eval(" ascii
+        $exec = "exec(" ascii
 
-		$dbg_1 = "C:\\Users\\Admin\\OneDrive\\Desktop\\Test" fullword ascii
-		$dbg_2 = "C:\\Users\\Admin\\source\\repos\\Mortis\\Release\\" fullword ascii
+    condition:
+        uint16(0) == 0x2321 or any of ($*)
+}
 
-		$ext_susp_1 = ".Mortis" fullword ascii
-		$ext_susp_2 = ".tabun" fullword ascii
+rule MaliciousPDF
+{
+    meta:
+        description = "Detects suspicious PDFs with embedded JavaScript"
+        author = "Loghmari Ala"
+        date = "2024-12-15"
 
-		$dir_susp_1 = "config.msi" fullword ascii
-		$dir_susp_2 = "recycle.bin" fullword ascii
-		$dir_susp_3 = "windows.old" fullword ascii
-		$dir_susp_4 = "$windows.~ws" fullword ascii
-		$dir_susp_5 = "$windows.~bt" fullword ascii
-		$dir_susp_6 = "msocache" fullword ascii
-		$dir_susp_7 = "perflogs" fullword ascii
+    strings:
+        $js = "/JavaScript" ascii
+        $launch = "/Launch" ascii
+        $action = "/OpenAction" ascii
 
-		$log_bcrypt = /BCrypt[\w]+ failed with error code:/ fullword ascii
-		$log_drive_1 = "[i] Encrypting Logical Drives:" fullword ascii
-		$log_drive_2 = "[-] No drives found." fullword ascii
-		$log_share_1 = "[i] Encrypting Network Shares:" fullword ascii
-		$log_share_2 = "[!] Failed to enumerate network shares:" fullword ascii
-		$log_share_3 = "[-] No network shares found." fullword ascii
-		$log_file_1 = "Encryption failed for file:" fullword ascii
-		$log_file_2 = "Encryption successful. Encrypted file:" fullword ascii
-		$log_file_3 = "Failed to open output file:" fullword ascii
-		$log_file_4 = "Failed to rename file:" fullword ascii
-		$log_file_5 = "File is empty:" fullword ascii
-		$log_rbin_1 = "[+] Emptied Recycle Bin." fullword ascii
-		$log_rbin_2 = "Recycle Bin emptied successfully." fullword ascii
-		$log_rbin_3 = "[!] Failed to Empty Recycle Bin." fullword ascii
-		$log_rbin_4 = "Failed to empty Recycle Bin." fullword ascii
-		$log_priv_1 = "[+] Enabled Privileges." fullword ascii
-		$log_priv_2 = "[!] Failed to enable privileges." fullword ascii
-		$log_aes_1 = "[*] AES Key:" fullword ascii
-		$log_aes_2 = "[i] AES Key:" fullword ascii
-		$log_aes_3 = "[!] Failed to generate AES Key." fullword ascii
-		$log_folder = "[*] Ignored Folder:" fullword ascii
-		$log_lock = "[+] Locked:" fullword ascii
-		$log_msg_1 = "cryptDir execution time:" fullword ascii
-	condition:
-		uint16(0) == 0x5A4D and
-		(
-			2 of ($malname, $app_policy, $dbg_*) or
-			1 of ($malname, $app_policy, $dbg_*) and
-			(
-				3 of ($log_*) or
-				6 of ($dir_susp_*, $ext_susp_*)
-			)
-		)
+    condition:
+        uint16(0) == 0x2550 and any of ($*)
+}
+
+rule MalwareInDocuments
+{
+    meta:
+        description = "Detects malicious scripts embedded in document files"
+        author = "Loghmari Ala"
+        date = "2024-12-15"
+
+    strings:
+        $macro1 = "AutoOpen" ascii
+        $macro2 = "Document_Open" ascii
+        $macro3 = "WScript.Shell" ascii
+        $suspicious_url = "http://" ascii
+
+    condition:
+        any of ($macro*) or $suspicious_url
+}
+
+rule HiddenPayload
+{
+    meta:
+        description = "Detect files with embedded or hidden payloads"
+        author = "Loghmari Ala"
+        date = "2024-12-15"
+
+    strings:
+        $powershell = "powershell.exe" ascii
+        $cmd_exec = "cmd.exe" ascii
+        $shell_exec = "ShellExecute" ascii
+        $url_call = "http://" ascii
+
+    condition:
+        any of them
+}
+
+rule SuspiciousImports
+{
+    meta:
+        description = "Detect executables importing suspicious functions"
+        author = "Loghmari Ala"
+        date = "2024-12-15"
+
+    strings:
+        $func1 = "VirtualAlloc" ascii
+        $func2 = "LoadLibrary" ascii
+        $func3 = "GetProcAddress" ascii
+        $func4 = "WinExec" ascii
+
+    condition:
+        uint16(0) == 0x5A4D and any of them // PE file
 }
