@@ -10,25 +10,25 @@ body {
 
 
 .container2 {
-  height: 33vh;
+  height: auto; /* Allow height to adjust dynamically */
   width: 100%;
-  align-items: center;
   display: flex;
+  flex-wrap: wrap; /* Allow elements to wrap within the container */
   justify-content: center;
+  align-items: center;
   background-color: #fcfcfc;
+  margin-top: 20px; /* Add space between container2 and heading_container */
+  margin-bottom: 20px; /* Add space between container2 and btn2 */
 }
 
 .card2 {
-  border-radius: 10px;
+  width: 90%; /* Allow cards to adjust based on container width */
+  max-width: 600px; /* Limit the maximum size of the cards */
+  height: auto; /* Allow cards to adjust their height based on content */
+  padding: 25px 30px;
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.3);
-  width: 90%; /* Adjust width to be percentage-based */
-  max-width: 600px; /* Max-width to restrict the size */
-  height: auto; /* Let the height adjust based on content */
   background-color: #ffffff;
-  padding: 25px 30px 40px;
-  overflow: auto; /* Enables scrolling if content overflows */
-  word-wrap: break-word; /* Prevents long words from overflowing the card */
-  position: relative; /* Make sure we can position the <pre> inside the card */
+  margin: 10px; /* Add spacing between cards */
 }
 
 .card2 pre {
@@ -82,23 +82,24 @@ body {
 }
 
 .btn2 {
-  text-decoration: none;
+  display: inline-block;
+  margin-top: 5px; /* Add spacing above the button */
+  padding: 10px 20px;
   background-color: #005af0;
   color: #ffffff;
-  padding: 10px 20px;
+  text-decoration: none;
+  text-align: center;
   border: none;
-  outline: none;
-  transition: 0.3s;
+  border-radius: 4px; /* Slight rounding for a modern look */
+  transition: all 0.3s ease;
 }
 
-.btn2:hover{
-  text-decoration: none;
+.btn2:hover {
   background-color: #ffffff;
   color: #005af0;
-  padding: 10px 20px;
-  border: none;
-  outline: 1px solid #010101;
+  border: 1px solid #005af0;
 }
+
 .form2 input {
   margin: 10px 0;
   width: 100%;
@@ -136,16 +137,10 @@ body {
 }
 
 .heading_container {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-align: start;
-      -ms-flex-align: start;
-          align-items: flex-start;
+  flex-direction: column;
+  align-items: center; /* Center-align the content */
+  margin-bottom: 20px; /* Add spacing between heading and container2 */
 }
 
 .heading_container img {
@@ -1207,7 +1202,8 @@ a:focus {
 .footer_section {
   display: -webkit-box;
   display: -ms-flexbox;
-  display: flex;
+  position: absolute;
+  bottom: 0;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
