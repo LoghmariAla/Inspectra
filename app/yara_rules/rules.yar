@@ -43,10 +43,15 @@ rule MaliciousPDF
         $js = "/JavaScript" ascii
         $launch = "/Launch" ascii
         $action = "/OpenAction" ascii
+        $js_hex = { 2F 4A 61 76 61 53 63 72 69 70 74 }
+        $stream = "stream" ascii
+        $flate = "/FlateDecode" ascii
 
     condition:
-        uint16(0) == 0x2550 and any of ($*)
+        uint16(0) == 0x2550 and (any of ($*) or $flate)
 }
+
+
 
 rule MalwareInDocuments
 {

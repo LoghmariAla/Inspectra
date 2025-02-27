@@ -1202,7 +1202,6 @@ a:focus {
 .footer_section {
   display: -webkit-box;
   display: -ms-flexbox;
-  position: absolute;
   bottom: 0;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
